@@ -1,7 +1,7 @@
 #include <iostream>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-
+#include "comm.hpp"
 using namespace cv;
 using namespace std;
 
@@ -13,10 +13,10 @@ int main( int argc, char** argv )
         cap.set(CV_CAP_PROP_FPS, 60);
         if ( !cap.isOpened() )  // if not success, exit program
         {
-                cout << "Cannot open the web cam" << endl;
+                cout << "Cannot open camera" << endl;
                 return -1;
         }
-
+	comm_start();
         namedWindow("Control", CV_WINDOW_NORMAL); //create a window called "Control"
         int iLowH = 170;
         int iHighH = 179;
@@ -113,6 +113,6 @@ int main( int argc, char** argv )
                         break; 
                 }
         }
-
+	comm_stop();
         return 0;
 }

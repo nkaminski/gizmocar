@@ -138,6 +138,30 @@ colortrack.cpp.s:
 	$(MAKE) -f CMakeFiles/colortrack.dir/build.make CMakeFiles/colortrack.dir/colortrack.cpp.s
 .PHONY : colortrack.cpp.s
 
+comm.o: comm.cpp.o
+.PHONY : comm.o
+
+# target to build an object file
+comm.cpp.o:
+	$(MAKE) -f CMakeFiles/colortrack.dir/build.make CMakeFiles/colortrack.dir/comm.cpp.o
+.PHONY : comm.cpp.o
+
+comm.i: comm.cpp.i
+.PHONY : comm.i
+
+# target to preprocess a source file
+comm.cpp.i:
+	$(MAKE) -f CMakeFiles/colortrack.dir/build.make CMakeFiles/colortrack.dir/comm.cpp.i
+.PHONY : comm.cpp.i
+
+comm.s: comm.cpp.s
+.PHONY : comm.s
+
+# target to generate assembly for a file
+comm.cpp.s:
+	$(MAKE) -f CMakeFiles/colortrack.dir/build.make CMakeFiles/colortrack.dir/comm.cpp.s
+.PHONY : comm.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -150,6 +174,9 @@ help:
 	@echo "... colortrack.o"
 	@echo "... colortrack.i"
 	@echo "... colortrack.s"
+	@echo "... comm.o"
+	@echo "... comm.i"
+	@echo "... comm.s"
 .PHONY : help
 
 
