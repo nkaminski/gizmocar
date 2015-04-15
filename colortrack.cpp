@@ -10,6 +10,7 @@ int main( int argc, char** argv )
         VideoCapture cap(0); //capture the video from webcam
         cap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
         cap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
+        cap.set(CV_CAP_PROP_FPS, 60);
         if ( !cap.isOpened() )  // if not success, exit program
         {
                 cout << "Cannot open the web cam" << endl;
@@ -72,10 +73,6 @@ int main( int argc, char** argv )
                 erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
                 dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
 
-                //morphological closing (removes small holes from the foreground)
-                dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
-                erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-
                 //Calculate the moments of the thresholded image
                 Moments oMoments = moments(imgThresholded);
 
@@ -86,10 +83,10 @@ int main( int argc, char** argv )
                 center = Point(imgTmp.size());
                 center.x *= 0.5;
                 center.y *= 0.5;
-                // if the area <= 10000, I consider that the there are no object in the image and it's because of the noise, the area is not zero 
+                // if the area <= 50000 px, its likely just noise
                 
                 imgLines = Mat::zeros( imgTmp.size(), CV_8UC3 );
-                if (dArea > 10000)
+                if (dArea > 50000)
                 {
                         //calculate the position of the ball
                         int posX = dM10 / dArea;
