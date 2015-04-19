@@ -59,7 +59,7 @@ void loop(){
   print_data();
   comm_parse();
   esc.writeMicroseconds(map(astate->power,0,255,1400,1600));
-  steer.write(map(astate->steer,0,255,0,180));
+  steer.write(map(astate->steer,0,255,50,130));
   //limits data rate
   delay(50);
 }
