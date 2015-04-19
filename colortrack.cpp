@@ -5,6 +5,11 @@
 using namespace cv;
 using namespace std;
 
+int lmap(int x, int in_min, int in_max, int out_min, int out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 int main( int argc, char** argv )
 {
         VideoCapture cap(0); //capture the video from webcam
@@ -26,6 +31,7 @@ int main( int argc, char** argv )
 
         int iLowV = 60;
         int iHighV = 255;
+	unsigned char steer=127, power=127;
 
         //Create trackbars in "Control" window
         createTrackbar("LowH", "Control", &iLowH, 179); //Hue (0 - 179)
@@ -80,7 +86,9 @@ int main( int argc, char** argv )
                 double dM10 = oMoments.m10;
                 double dArea = oMoments.m00;
                 Point center;
+		int width;
                 center = Point(imgTmp.size());
+		width = center.x;
                 center.x *= 0.5;
                 center.y *= 0.5;
                 // if the area <= 50000 px, its likely just noise
@@ -97,8 +105,18 @@ int main( int argc, char** argv )
                                 //Draw a line from the previous point to the current point
                                 line(imgLines, Point(posX, posY), center, Scalar(0,0,255), 2);
                         }
+			steer=lmap(posX,0,width,0,255);
+			power=abs(steer-127)/3;
 
-                }
+                } else {
+			power=127;
+			steer=127;
+		}
+
+		pthread_mutex_lock( &lck );
+		s_power = power;
+		s_steer = steer;
+		pthread_mutex_unlock( &lck );
 
                 imshow("Thresholded Image", imgThresholded); //show the thresholded image
 
