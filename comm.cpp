@@ -56,5 +56,11 @@ void comm_stop(){
 	comm_run=0;
 	pthread_join(comm_th, NULL);
 }
+void comm_check(){
+  if(!pthread_tryjoin_np(comm_th,NULL)){
+    printf("FATAL: Comms failed, exiting!\n");
+    exit(4);
+  }
+}
 
 }
