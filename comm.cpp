@@ -19,12 +19,12 @@ void packet_crc(packet_t *p){
     p->cksum = htons(compute_crc((char *)p,sizeof(packet_t)-sizeof(uint16_t)));
     }
 
-void* comm_thread(void *data){
+void* comm_thread(void * serial_port){
         char msg[RECVBUF];
         connection_t c;
         packet_t ctl;
 		//TODO error handling
-        serio_init(&c, "/dev/ttyACM0");
+        serio_init(&c, (char *)serial_port);
         while(comm_run){
           if(serio_recv(&c, msg) < 0){
             printf("Error reading data!\n");
@@ -41,12 +41,12 @@ void* comm_thread(void *data){
         printf("power: %i, steering: %i, CRC: %i, Resp: %s\n", ctl.power, ctl.steer, ctl.cksum, msg); 
         }
 }
-int comm_start(){
+int comm_start(char * serial_port){
 	comm_run=1;
 	s_power=127;
 	s_steer=127;
 	lck = PTHREAD_MUTEX_INITIALIZER;
-	if((rv=pthread_create( &comm_th, NULL, comm_thread, (void *)NULL)))
+	if((rv=pthread_create( &comm_th, NULL, comm_thread, (void *)serial_port)))
 	     {
 	         fprintf(stderr,"Error - pthread_create() return code: %d\n",rv);
 	         exit(EXIT_FAILURE);

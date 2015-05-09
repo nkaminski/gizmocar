@@ -12,6 +12,10 @@ int lmap(int x, int in_min, int in_max, int out_min, int out_max)
 
 int main( int argc, char** argv )
 {
+        if(argc != 2){
+            printf("Usage: ./colortrack <serial port>\n");
+            return 3;
+            }
         VideoCapture cap(0); //capture the video from webcam
         cap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
         cap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
@@ -21,7 +25,7 @@ int main( int argc, char** argv )
                 cout << "Cannot open camera" << endl;
                 return -1;
         }
-	comm_start();
+	comm_start(argv[1]);
         namedWindow("Control", CV_WINDOW_NORMAL); //create a window called "Control"
         int iLowH = 170;
         int iHighH = 179;
