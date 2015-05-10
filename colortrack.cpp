@@ -2,6 +2,7 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "comm.hpp"
+#define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 using namespace cv;
 using namespace std;
 
@@ -109,11 +110,11 @@ int main( int argc, char** argv )
                                 //Draw a line from the previous point to the current point
                                 line(imgLines, Point(posX, posY), center, Scalar(0,0,255), 2);
                         }
-			steer=lmap(posX,0,width,0,255);
-			power=abs(steer-127)/3;
+			steer=constrain(lmap(posX,0,width,-20,275),0,255);
+			power=15+(abs(steer-127)/4);
 
                 } else {
-			power=127;
+			power=255;
 			steer=127;
 		}
 

@@ -3,6 +3,11 @@
 extern packet_t pA, pB, safe;
 extern packet_t *astate, *incoming;
 extern comm_state cs;
+extern volatile unsigned long lt;
+extern volatile int sample;
+extern double minspeed;
+extern double cf, err;
+
 #define SerComm Serial
 #define htons(x) ( ((x)<<8) | (((x)>>8)&0xFF) )
 #define ntohs(x) htons(x)

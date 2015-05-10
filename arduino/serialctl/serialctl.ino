@@ -22,6 +22,10 @@ Servo steer, esc;
 packet_t pA, pB, safe;
 packet_t *astate, *incoming;
 comm_state cs;
+volatile unsigned long lt;
+volatile int sample;
+double minspeed = 300000;
+double cf, err;
 
 #define htons(x) ( ((x)<<8) | (((x)>>8)&0xFF) )
 #define ntohs(x) htons(x)
@@ -50,6 +54,11 @@ void setup() {
   esc.attach(6);
   steer.write(90);
   esc.writeMicroseconds(1500);
+  pinMode(2,INPUT);
+  sample=0;
+  cf=0;
+  lt=micros();
+  attachInterrupt(0, r_ISR, FALLING);
   //copy safe values over the current state
   memcpy(astate, &safe, sizeof(packet_t));
 }
@@ -58,7 +67,14 @@ void loop(){
   wdt_reset();
   print_data();
   comm_parse();
-  esc.writeMicroseconds(map(astate->power,0,255,1400,1600));
+  //esc.writeMicroseconds(map(astate->power,0,255,1400,1600));
+  if(astate->power < 127){
+    speedreg(map(astate->power,0,126,100,0));
+  } else {
+    sample=0;
+    cf=0;
+    esc.writeMicroseconds(map(astate->power,127,255,1500,2000));
+  }
   steer.write(map(astate->steer,0,255,55,125));
   //limits data rate
   delay(50);
