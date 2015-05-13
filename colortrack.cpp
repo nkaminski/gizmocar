@@ -51,7 +51,7 @@ int main( int argc, char** argv )
         createTrackbar("HighV", "Control", &iHighV, 255);
 
 
-        createTrackbar("Minimum obj. size", "Control", &minSz, 200);
+        createTrackbar("Minimum obj. size", "Control", &minSz, 400);
         createTrackbar("Car Speed", "Control", &dSlider, 127);
 
         //Capture a temporary image from the camera

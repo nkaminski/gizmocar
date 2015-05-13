@@ -69,13 +69,13 @@ void loop(){
   comm_parse();
   //esc.writeMicroseconds(map(astate->power,0,255,1400,1600));
   if(astate->power < 127){
-    speedreg(map(astate->power,0,126,100,0));
+    speedreg(map(astate->power,0,126,150,0));
   } else {
     sample=0;
     cf=0;
     esc.writeMicroseconds(map(astate->power,127,255,1500,2000));
   }
-  steer.write(map(astate->steer,0,255,55,125));
+  steer.write(map(astate->steer,0,255,130,50));
   //limits data rate
   delay(50);
 }
