@@ -23,11 +23,11 @@ void* comm_thread(void * serial_port){
         char msg[RECVBUF];
         connection_t c;
         packet_t ctl;
-		//TODO error handling
         serio_init(&c, (char *)serial_port);
         while(comm_run){
           if(serio_recv(&c, msg) < 0){
             printf("Error reading data!\n");
+            return 0;
             }
         //update data here
 	pthread_mutex_lock( &lck );
@@ -58,7 +58,7 @@ void comm_stop(){
 }
 void comm_check(){
   if(!pthread_tryjoin_np(comm_th,NULL)){
-    printf("FATAL: Comms failed, exiting!\n");
+    printf("FATAL: Serial communication failed, exiting!\n");
     exit(4);
   }
 }
